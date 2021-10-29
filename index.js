@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 const app = express();
 require('dotenv').config();
 const cors = require('cors');
+const ObjectId = require('mongodb').ObjectId;
 const port = process.env.PORT || 5000;
 
 //middleware
@@ -86,6 +87,15 @@ async function run() {
       const cursor = packageCollection.find({});
       const packages = await cursor.toArray();
       res.send(packages)
+    });
+
+    // send single data by id GET API
+    app.get('/packages/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const package = await packageCollection.findOne(query);
+      console.log('hitting id ', id)
+      res.send(package)
     })
 
   }
