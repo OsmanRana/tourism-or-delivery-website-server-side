@@ -23,6 +23,7 @@ async function run() {
 
     const database = client.db('tourism');
     const packageCollection = database.collection('packages')
+    const bookingCollection = database.collection('bookings')
 
     // one time data insertion
 
@@ -94,8 +95,21 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const package = await packageCollection.findOne(query);
-      console.log('hitting id ', id)
       res.send(package)
+    });
+
+    // seend to server POST API
+    app.post('/bookings', async (req, res)=>{
+      const newBooking = req.body;
+      const result = await bookingCollection.insertOne(newBooking);
+      res.json(result)
+    });
+
+    // send to client all booking GET API
+    app.get('/bookings', async(req, res)=>{
+      const cursor = bookingCollection.find({});
+      const bookings = await cursor.toArray();
+      res.send(bookings)
     })
 
   }
