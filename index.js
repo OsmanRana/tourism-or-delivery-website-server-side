@@ -99,17 +99,27 @@ async function run() {
     });
 
     // seend to server POST API
-    app.post('/bookings', async (req, res)=>{
+    app.post('/bookings', async (req, res) => {
       const newBooking = req.body;
       const result = await bookingCollection.insertOne(newBooking);
       res.json(result)
     });
 
     // send to client all booking GET API
-    app.get('/bookings', async(req, res)=>{
+    app.get('/bookings', async (req, res) => {
       const cursor = bookingCollection.find({});
       const bookings = await cursor.toArray();
       res.send(bookings)
+    });
+    
+
+    // DELETE API
+    app.delete('/bookings/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: ObjectId(id)}
+      const result = await bookingCollection.deleteOne(query)
+      res.json(result)
+
     })
 
   }
