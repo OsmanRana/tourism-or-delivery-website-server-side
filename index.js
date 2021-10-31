@@ -90,6 +90,12 @@ async function run() {
       res.send(packages)
     });
 
+    // add new package POST API
+    app.post('/packages', async(req, res)=>{
+      const newPackage = req.body;
+      const result = await packageCollection.insertOne(newPackage)
+      res.json(result)
+    });
     // send single data by id GET API
     app.get('/packages/:id', async (req, res) => {
       const id = req.params.id;
