@@ -91,7 +91,7 @@ async function run() {
     });
 
     // add new package POST API
-    app.post('/packages', async(req, res)=>{
+    app.post('/packages', async (req, res) => {
       const newPackage = req.body;
       const result = await packageCollection.insertOne(newPackage)
       res.json(result)
@@ -117,12 +117,12 @@ async function run() {
       const bookings = await cursor.toArray();
       res.send(bookings)
     });
-    
+
 
     // DELETE API
-    app.delete('/bookings/:id', async(req, res)=>{
+    app.delete('/bookings/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id: ObjectId(id)}
+      const query = { _id: ObjectId(id) }
       const result = await bookingCollection.deleteOne(query)
       res.json(result)
 
