@@ -118,6 +118,19 @@ async function run() {
       res.send(bookings)
     });
 
+    // update booking status PUT API
+    app.put('/bookings/:id', async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: ObjectId(id) }
+      const options = { upsert: true }
+      const updateDoc = {
+        $set: {
+          orderStatus: "Approved"
+        }
+      };
+      const result = await bookingCollection.updateOne(filter, updateDoc, options)
+      res.json(result)
+    })
 
     // DELETE API
     app.delete('/bookings/:id', async (req, res) => {
@@ -125,8 +138,7 @@ async function run() {
       const query = { _id: ObjectId(id) }
       const result = await bookingCollection.deleteOne(query)
       res.json(result)
-
-    })
+    });
 
   }
   finally {
